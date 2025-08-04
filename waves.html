@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>..............................................</title>
+<style>
+  body {
+    font-family: monospace; 
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+  }
+</style>
+</head>
+<body>
+<script>
+  let periodString = '';
+  let characterWidth = 7.8;
+  let characterHeight = 13;
+  let perRow = Math.ceil(window.innerWidth / characterWidth);
+  let numRows = Math.ceil(window.innerHeight / characterHeight);
+  function buildPeriodGrid() {
+    perRow = Math.ceil(window.innerWidth / characterWidth);
+    numRows = Math.ceil(window.innerHeight / characterHeight);
+    let row = '';
+    const periodGrid = [];
+    const rowArr = Array(perRow).fill('o');
+
+    row += '\n';
+    for (let i = 0; i <  numRows; i++) {
+      periodGrid.push([...rowArr]);
+    }
+    return periodGrid;
+  }
+
+  function animate(baseArr) {
+    const numBold = 100;
+    for (let i = 0; i < numBold; i++) {
+      let r = Math.floor(Math.random() * numRows);
+      let c = Math.floor(Math.random() * perRow);
+      baseArr[r][c] = 'O';
+    }
+    return baseArr;
+  }
+
+
+  let phase = 0;
+  let frequency = 0.1;
+  let amplitude = 5.0;
+
+  function makeWaves(arr, waveWidth) {
+    // move the position
+    phase += 0.05;
+
+    for (let r = 0; r < numRows; r++) {
+      for (let c = 0; c < perRow; c++) {
+        let testC = c + Math.sin(c);
+        let testR = r + Math.sin(r);
+        const cVal = amplitude *  Math.sin(frequency * c);
+        const rVal = amplitude * Math.sin(frequency * r);
+        const value = Math.sin(cVal+rVal+phase);
+        
+        if (value > 0) {
+          arr[r][c] = 'O';
+        } else {
+          arr[r][c] = 'o';
+        }
+      }
+    }
+    return arr;
+  }
+
+  function createPeriodStrings(baseArr) {
+    let body = document.body;
+
+    let periodString = '';
+    for (const rowArr of baseArr) {
+      const row = rowArr.join('');
+      periodString += row;
+      periodString += '\n';
+    }
+    body.textContent = periodString;
+  }
+
+  function run() {
+    const periodGrid = buildPeriodGrid();
+    const waves = makeWaves(periodGrid, 4);
+    createPeriodStrings(waves);
+  }
+
+  setInterval(run, 100);
+
+  window.addEventListener('resize', run);
+</script>
+</body>
+</html>
