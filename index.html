@@ -13,19 +13,17 @@
 </head>
 <body>
 <script>
-  let periodString = '';
-  let characterWidth = 7.8;
+  let characterWidth = 7;
   let characterHeight = 13;
+  console.log(window.innerWidth, window.innerHeight);
   let perRow = Math.ceil(window.innerWidth / characterWidth);
   let numRows = Math.ceil(window.innerHeight / characterHeight);
   function buildPeriodGrid() {
     perRow = Math.ceil(window.innerWidth / characterWidth);
     numRows = Math.ceil(window.innerHeight / characterHeight);
-    let row = '';
     const periodGrid = [];
     const rowArr = Array(perRow).fill('o');
 
-    row += '\n';
     for (let i = 0; i <  numRows; i++) {
       periodGrid.push([...rowArr]);
     }
@@ -49,7 +47,7 @@
 
   function makeWaves(arr, waveWidth) {
     // move the position
-    phase += 0.05;
+    phase += 0.1;
 
     for (let r = 0; r < numRows; r++) {
       for (let c = 0; c < perRow; c++) {
